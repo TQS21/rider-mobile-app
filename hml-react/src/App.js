@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
 import axios from 'axios';
 
-import AddProduct from './components/AddProduct';
-import Cart from './components/Cart';
 import Login from './components/Login';
-import ProductList from './components/ProductList';
+import DeliveriesList from './components/DeliveriesList';
 import Specification from './components/Specification';
 import Register from './components/Register';
-import ProductsBought from "./components/ProductsBought";
 
 
 import Context from "./Context";
@@ -18,89 +15,57 @@ export default class App extends Component {
     super(props);
     this.state = {
       user: null,
-      cart: {},
-      products: []
+      // cart: {},
+      deliveries: []
     };
     this.routerRef = React.createRef();
   }
 
   async componentDidMount() {
-    let user = localStorage.getItem("user");
-    let cart = localStorage.getItem("cart");
 
-    const products = await axios.get('http://localhost:8081/hml/api/allBooks');
-    user = user ? JSON.parse(user) : null;
-    cart = cart? JSON.parse(cart) : {};
+    const deliveries = await axios.get('http://localhost:8080/delivery');
 
-    this.setState({ user,  products: products.data, cart });
+    let user =  null;
+
+    this.setState({ user,  deliveries: deliveries.data });
   }
 
   login = async (email, password) => {
-    const res = await axios.post(
+    this.setState({ user: "dsadsasada" });
+    return true
+    /* const res = await axios.post(
       'http://deti-tqs-05:8080/login',
       { email, password },
     ).catch((res) => {
       return { status: 401, message: 'Unauthorized' }
     })
 
-    if(res.status === 202) {
+    if(res.status === 200) {
+      console.log(res)
       const user = {
-        email:res.data.email,
-        name:res.data.name,
-        bought:[]
+        token: res.data.token
       }
       console.log(user)
       this.setState({ user });
-      localStorage.setItem("user", JSON.stringify(user));
       return true;
     } else {
       return false;
-    }
+    } */
   }
 
   logout = e => {
     e.preventDefault();
     this.setState({ user: null });
-    localStorage.removeItem("user");
+
+    
   };
 
-  addProduct = (product, callback) => {
-    let products = this.state.products.slice();
-    products.push(product);
-    this.setState({ products }, () => callback && callback());
-  };
-
-  addToCart = cartItem => {
-    let cart = this.state.cart;
-    console.log(cartItem)
-    if (cart[cartItem.id]) {
-      cart[cartItem.id].amount += cartItem.amount;
-    } else {
-      cart[cartItem.id] = cartItem;
-    }
-    localStorage.setItem("cart", JSON.stringify(cart));
-    this.setState({ cart });
-  };
-
-  removeFromCart = cartItemId => {
-    let cart = this.state.cart;
-    delete cart[cartItemId];
-    localStorage.setItem("cart", JSON.stringify(cart));
-    this.setState({ cart });
-  };
-
-  clearCart = () => {
-    let cart = {};
-    localStorage.removeItem("cart");
-    this.setState({ cart });
-  };
 
   checkout = () => {
     if (!this.state.user) {
       this.routerRef.current.history.push("/login");
       return;
     }
-    this.clearCart();
   };
 
   render() {
@@ -108,11 +73,7 @@ export default class App extends Component {
       <Context.Provider
         value={{
           ...this.state,
-          removeFromCart: this.removeFromCart,
-          addToCart: this.addToCart,
           login: this.login,
-          addProduct: this.addProduct,
-          clearCart: this.clearCart,
           checkout: this.checkout
         }}
       >
@@ -144,23 +105,6 @@ export default class App extends Component {
               <div className={`navbar-menu ${
                   this.state.showMenu ? "is-active" : ""
                 }`}>
-                <Link to="/products" className="navbar-item">
-                  Products
-                </Link>
-                {this.state.user && this.state.user.accessLevel < 1 && (
-                  <Link to="/add-product" className="navbar-item">
-                    Add Product
-                  </Link>
-                )}
-                <Link to="/cart" className="navbar-item">
-                  Cart
-                  <span
-                    className="tag is-primary"
-                    style={{ marginLeft: "5px" }}
-                  >
-                    { Object.keys(this.state.cart).length }
-                  </span>
-                </Link>
                 {!this.state.user ? (
                   <>
                   <Link to="/login" className="navbar-item">
@@ -173,8 +117,8 @@ export default class App extends Component {
                   </>
                 ) : (
                   <>
-                  <Link to="/products-bought" className="navbar-item">
-                    Products Bought
+                  <Link to="/deliveries" className="navbar-item">
+                    Deliveries
                   </Link>
 
                   <Link to="/" onClick={this.logout} className="navbar-item">
@@ -185,14 +129,11 @@ export default class App extends Component {
               </div>
             </nav>
             <Switch>
-              <Route exact path="/" component={ProductList} />
+              <Route exact path="/" component={Login} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/cart" component={Cart} />
-              <Route exact path="/add-product" component={AddProduct} />
-              <Route exact path="/products" component={ProductList} />
-              <Route exact path="/specification" component={Specification} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/products-bought" component={ProductsBought} />
+              <Route exact path="/specification" component={Specification} />
+              <Route exact path="/deliveries" component={DeliveriesList} />
             </Switch>
           </div>
         </Router>

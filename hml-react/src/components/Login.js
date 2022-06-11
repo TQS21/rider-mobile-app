@@ -26,6 +26,8 @@ class Login extends Component {
           this.setState({ error: "Invalid Credentails" });
         }
         else{
+          console.log("delivery")
+          this.routerRef.current.history.push("/delivery");
         }
       })
   };
@@ -78,7 +80,7 @@ class Login extends Component {
         </form>
       </>
     ) : (
-      <Redirect to="/products" />
+      <Redirect to="/deliveries" />
     );
   }
 }
