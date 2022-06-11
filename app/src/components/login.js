@@ -1,4 +1,92 @@
-import React from 'react'
+
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import withContext from "../withContext";
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
+  }
+
+  handleChange = e => this.setState({ [e.target.name]: e.target.value, error: "" });
+
+  login = (e) => {
+    e.preventDefault();
+
+    const { username, password } = this.state;
+    if (!username || !password) {
+      return this.setState({ error: "Fill all fields!" });
+    }
+    this.props.context.login(username, password)
+      .then((loggedIn) => {
+        if (!loggedIn) {
+          this.setState({ error: "Invalid Credentails" });
+        }
+        else{
+        }
+      })
+  };
+
+  render() {
+    return !this.props.context.user ? (
+      <>
+        <div className="hero is-primary ">
+          <div className="hero-body container">
+            <h4 className="title">Login</h4>
+          </div>
+        </div>
+        <br />
+        <br />
+        <form onSubmit={this.login}>
+          <div className="columns is-mobile is-centered">
+            <div className="column is-one-third">
+              <div className="field">
+                <label className="label">Email: </label>
+                <input
+                  className="input"
+                  type="email"
+                  name="username"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="field">
+                <label className="label">Password: </label>
+                <input
+                  className="input"
+                  type="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
+              </div>
+              {this.state.error && (
+                <div className="has-text-danger">{this.state.error}</div>
+              )}
+              <div className="field is-clearfix">
+                <button
+                  className="button is-primary is-outlined is-pulled-right"
+                >
+                  Submit
+                </button>
+              </div>
+              <a href="/register" style={{marginLeft:'25%'}}>If you are not registered, click here!</a>
+
+            </div>
+          </div>
+        </form>
+      </>
+    ) : (
+      <Redirect to="/products" />
+    );
+  }
+}
+
+export default withContext(Login);
+
+/* import React from 'react'
 //import { emailValidator } from '../helpers/emailValidator'
 //import { passwordValidator } from '../helpers/passwordValidator'
 //import md5 from "react-native-md5";
@@ -53,7 +141,7 @@ export default function Login() {
 
       }
       
-    }) */
+    }) 
 
     return 
   }
@@ -81,8 +169,6 @@ export default function Login() {
             <span class="text-danger" role="alert">Wrong pattern</span>
           )}
         </div>
-        {/* <span className="text-danger">{defaultState.emailError}</span> */}
-        {/* <span >{defaultState.email}</span> */}
         <div className="mb-3">
           <label htmlFor="password">Password</label>
           <input
@@ -90,8 +176,6 @@ export default function Login() {
             type="password"
             className="form-control"
             placeholder="Enter password"
-            //value={defaultState.password}
-            //onChangeText={(text) => defaultState.password= text}
             {...register("password", { required: true, minLength: 5 })}
           />
           {errors.password && errors.password.type === "required" && (
@@ -103,8 +187,6 @@ export default function Login() {
 
 
         </div>
-        {/* <span className="text-danger">{defaultState.passwordError}</span> */}
-        {/* <span >{defaultState.password}</span> */}
         <div className="d-grid">
           <button type="submit" className="btn btn-primary">
             Submit
@@ -112,4 +194,7 @@ export default function Login() {
         </div>
       </form>
     )
-}
+} */
+
+
+

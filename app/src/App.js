@@ -6,47 +6,90 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Login from './components/login'
 import Home from './components/main'
 //import SignUp from './components/signup.component'
+import Context from "./Context";
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-          <div className="container">
-            <Link className="navbar-brand" to={'/log-in'}>
-              HML
-            </Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/log-in'}>
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+    };
+    this.routerRef = React.createRef();
+  }
+
+  render() {
+    return (
+      <Context.Provider
+        value={{
+          ...this.state,
+          removeFromCart: this.removeFromCart,
+          addToCart: this.addToCart,
+          login: this.login,
+          addProduct: this.addProduct,
+          clearCart: this.clearCart,
+          checkout: this.checkout
+        }}
+      >
+        <Router ref={this.routerRef}>
+        <div className="App">
+          <nav
+            className="navbar container"
+            role="navigation"
+            aria-label="main navigation"
+          >
+            <div className="navbar-brand">
+              <b className="navbar-item is-size-4 ">HML</b>
+              <label
+                role="button"
+                class="navbar-burger burger"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+                onClick={e => {
+                  e.preventDefault();
+                  this.setState({ showMenu: !this.state.showMenu });
+                }}
+              >
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </label>
+            </div>
+              <div className={`navbar-menu ${
+                  this.state.showMenu ? "is-active" : ""
+                }`}>
+                {!this.state.user ? (
+                  <>
+                  <Link to="/login" className="navbar-item">
                     Login
                   </Link>
-                </li>
 
-                {/*<li className="nav-item">
-                  <Link className="nav-link" to={'/sign-up'}>
-                    Sign up
+                  <Link to="/register" className="navbar-item">
+                    Register
                   </Link>
-                </li> */}
-              </ul>
-            </div>
-          </div>
-        </nav>
+                  </>
+                ) : (
+                  <>
+                  <Link to="/deliveries" className="navbar-item">
+                    Deliveries
+                  </Link>
 
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Routes>
-              <Route exact path="/" element={<Login />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/Home" element={<Home />} />
-              {/* <Route path="/sign-up" element={<SignUp />} /> */}
-            </Routes>
+                  <Link to="/" onClick={this.logout} className="navbar-item">
+                    Logout
+                  </Link>
+                  </>
+                )}
+              </div>
+            </nav>
+            <Switch>
+              <Route exact path="/" component={ProductList} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+            </Switch>
           </div>
-        </div>
-      </div>
-    </Router>
-  )
+        </Router>
+      </Context.Provider>
+    )
+  }
 }
 
-export default App
