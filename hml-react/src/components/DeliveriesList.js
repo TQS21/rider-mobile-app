@@ -3,21 +3,21 @@ import Delivery from "./Delivery";
 import withContext from "../withContext";
 
 const DeliveriesList = props => {
-  const { Deliveries } = props.context;
+  const { deliveries } = props.context;
 
 
   return (
     <>
       <div className="hero is-primary">
         <div className="hero-body container">
-          <h4 className="title">Deliveries</h4>
+          <h4 className="title">deliveries</h4>
         </div>
       </div>
       <br />
       <div className="container">
         <div className="column columns is-multiline">
         {
-            Deliveries.map((delivery, index) => (
+            deliveries.map((delivery, index) => (
               <Delivery
                 delivery={delivery}
                 key={index}

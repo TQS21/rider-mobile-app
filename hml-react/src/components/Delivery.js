@@ -8,7 +8,7 @@ const Delivery = props => {
       <div className="box">
         <div className="media">
           <div className="media-content">
-            <div>{delivery.Product.name} available at {delivery.Shop.name}</div>
+            <div>{delivery.product.name} available at {delivery.Shop.name}</div>
             <div className="is-clearfix">
             <button
                   className="button is-small is-outlined is-primary   is-pulled-right"
@@ -42,8 +42,15 @@ const Accept = (props, id) => {
       if (response.ok){
         response.json().then((logins) => {
 
-          console.log("working!!!!");
-        })
+          console.log("Delivery accepted!!!!");
+          /* return (
+            {
+              <Alert key=success variant=success'>
+                The delviery was accepted
+              </Alert>
+          }
+          ) */
+      })
       }
       else if (response.status === 404){
         console.log("Delivery not Found");

@@ -18,7 +18,7 @@ const Specification = props => {
       <div class="right-column">
         <div class="product-description">
           <h1>{delivery.product.name}</h1>
-          <h4>available {delivery.shop.name}</h4>
+          <h4>in {delivery.Shop.name}</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ultrices, erat id venenatis venenatis, purus tortor fermentum ipsum, in fringilla eros felis non justo. Morbi placerat lorem a elit pellentesque auctor. </p>
         </div>
         </div>
