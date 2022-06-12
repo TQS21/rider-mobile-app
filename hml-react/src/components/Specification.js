@@ -21,12 +21,12 @@ const Specification = props => {
           <h4>in {delivery.Shop.name}</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ultrices, erat id venenatis venenatis, purus tortor fermentum ipsum, in fringilla eros felis non justo. Morbi placerat lorem a elit pellentesque auctor. </p>
         </div>
-        <button
-              className="button is-small is-outlined is-primary   is-pulled-right"
-              onClick={Accept(delivery.id)}
-            >
-              Accept
-            </button>
+          <button
+                className="button is-small is-outlined is-primary   is-pulled-right"
+                onClick={Accept(delivery.id)}
+              >
+                Accept
+              </button>
         </div>
       </main>
     </>
@@ -51,6 +51,7 @@ const Accept = (props, id) => {
               </Alert>
           }
           ) */
+          this.setState({delivery: props})
       })
       }
       else if (response.status === 404){

@@ -6,6 +6,7 @@ import Login from './components/Login';
 import DeliveriesList from './components/DeliveriesList';
 import Specification from './components/Specification';
 import Register from './components/Register';
+import WorkingDelivery from './components/WorkingDelivery';
 
 
 import Context from "./Context";
@@ -15,7 +16,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       user: null,
-      // cart: {},
+      delivery: null,
       deliveries: []
     };
     this.routerRef = React.createRef();
@@ -25,7 +26,7 @@ export default class App extends Component {
 
     // const deliveries = await axios.get('http://localhost:8080/delivery');
 
-    const deliveries = {status: 200, data : 	      
+    let deliveries = {status: 200, data : 	      
       [
         {
           "id": 1,
@@ -71,17 +72,16 @@ export default class App extends Component {
         }
       ]
       }
-    let user =  null;
 
     if(deliveries.status === 200) {
       console.log(deliveries.data)
-      this.setState({ user,  deliveries: deliveries.data });
+      this.setState({ user:null,  deliveries: deliveries.data });
     } else {
       this.setState({ user:null,  deliveries: null });
 
     }
 
-    this.setState({ user,  deliveries: deliveries.data });
+    this.setState({ user:null,  deliveries: deliveries.data });
   }
 
   login = async (email, password) => {
@@ -103,7 +103,7 @@ export default class App extends Component {
     }) */
     console.log(email)
     console.log(password)
-    const res = {data:{token: "sdsadas"}, status: 200}
+    let res = {data:{token: "sdsadas"}, status: 200}
     if(res.status === 200) {
       console.log(res)
       console.log(res.data.token)
@@ -117,7 +117,10 @@ export default class App extends Component {
 
   logout = e => {
     e.preventDefault();
-    this.setState({ user: null });
+    // let deliveries = localStorage.getItem("deliveries");
+    // let delivery = localStorage.getItem("delivery");
+    // this.setState({ user: null , deliveries, delivery });
+    this.setState({ user: null  });
     this.routerRef.current.history.push("/login");
     
   };
@@ -195,7 +198,16 @@ export default class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/specification" component={Specification} />
-              <Route exact path="/deliveries" component={DeliveriesList} />
+              {!this.state.delivery ? (
+                <>
+                <Route exact path="/deliveries" component={DeliveriesList} />
+                </>
+              ):( 
+                <>
+                <Route exact path="/deliveries" component={WorkingDelivery} />
+                </>
+                )}
+              
             </Switch>
           </div>
         </Router>
