@@ -118,7 +118,7 @@ export default class App extends Component {
   logout = e => {
     e.preventDefault();
     this.setState({ user: null });
-
+    this.routerRef.current.history.push("/login");
     
   };
 
