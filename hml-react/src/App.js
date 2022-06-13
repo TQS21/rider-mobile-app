@@ -16,7 +16,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       user: null,
-      delivery: null,
+      currentJob: null,
       deliveries: []
     };
     this.routerRef = React.createRef();
@@ -78,10 +78,11 @@ export default class App extends Component {
       this.setState({ user:null,  deliveries: deliveries.data });
     } else {
       this.setState({ user:null,  deliveries: null });
-
+    
     }
 
     this.setState({ user:null,  deliveries: deliveries.data });
+    // console.log(this.state)
   }
 
   login = async (email, password) => {
@@ -101,11 +102,11 @@ export default class App extends Component {
       }
       // return { status: 401, message: 'Unauthorized' }
     }) */
-    console.log(email)
-    console.log(password)
+    // console.log(email)
+    // console.log(password)
     let res = {data:{token: "sdsadas"}, status: 200}
     if(res.status === 200) {
-      console.log(res)
+      // console.log(res)
       console.log(res.data.token)
       this.setState({ user: res.data.token });
       return true;
@@ -198,15 +199,8 @@ export default class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/specification" component={Specification} />
-              {!this.state.delivery ? (
-                <>
-                <Route exact path="/deliveries" component={DeliveriesList} />
-                </>
-              ):( 
-                <>
-                <Route exact path="/deliveries" component={WorkingDelivery} />
-                </>
-                )}
+              <Route exact path="/deliveries" component={DeliveriesList} />
+              <Route exact path="/currentJob" component={WorkingDelivery} />
               
             </Switch>
           </div>

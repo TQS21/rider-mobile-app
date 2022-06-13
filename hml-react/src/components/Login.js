@@ -24,10 +24,12 @@ class Login extends Component {
       .then((loggedIn) => {
         if (!loggedIn) {
           this.setState({ error: "Invalid Credentails" });
+
         }
         else{
           console.log("delivery")
-          this.routerRef.current.history.push("/delivery");
+          console.log(this.props.context)
+          //this.routerRef.current.history.push("/delivery");
         }
       })
   };

@@ -10,12 +10,16 @@ const Delivery = props => {
           <div className="media-content">
             <div>{delivery.product.name} available at {delivery.Shop.name}</div>
             <div className="is-clearfix">
-            <button
-                  className="button is-small is-outlined is-primary   is-pulled-right"
-                  onClick={Accept(delivery.id)}
-                >
-                  Accept
-                </button>
+            <Link to={{pathname:'/currentJob'}}>
+
+              <button
+                    className="button is-small is-outlined is-primary   is-pulled-right"
+                    onClick={accept_del(props, delivery)}
+                  >
+                    Accept
+                  </button>
+              </Link>
+
               <Link to={{pathname:'/Specification', state:{delivery : delivery}}}>
                 <button
                   className="button is-small is-outlined is-primary   is-pulled-right"
@@ -33,9 +37,37 @@ const Delivery = props => {
 };
 
 
-const Accept = (props, id) => {
+const accept_del = (props, delivery) => {
+  console.log(props)
+  console.log(delivery)
+  let response = {status:200 , data:{}}
 
-  fetch('http://deti-tqs-05:8080/delivery'+id, {
+  if (response.status === 200){
+
+      console.log("Delivery accepted!!!!");
+      //this.setState({ delivery: delivery});
+      //this.routerRef.current.history.push("/delivery");
+      props.state.currentJob = delivery
+      console.log(props)
+      // this.routerRef.current.history.push("/currentJob");
+
+
+
+  }
+  else if (response.status === 404){
+    console.log("Delivery not Found");
+  }
+  else if (response.status === 401){
+    console.log("Please Login first");
+  }
+  else if (response.status === 403){
+    console.log("Permission error");
+  }
+  else{
+    console.log("invalid parameters");
+  }
+
+  /* fetch('http://deti-tqs-05:8080/delivery'+id, {
       method: 'POST',
       token: props.user,
     }).then((response)=>{
@@ -43,13 +75,10 @@ const Accept = (props, id) => {
         response.json().then((logins) => {
 
           console.log("Delivery accepted!!!!");
-          /* return (
-            {
-              <Alert key=success variant=success'>
-                The delviery was accepted
-              </Alert>
-          }
-          ) */
+          this.setState({ delivery: delivery});
+          this.routerRef.current.history.push("/delivery");
+
+
       })
       }
       else if (response.status === 404){
@@ -65,7 +94,7 @@ const Accept = (props, id) => {
         console.log("invalid parameters");
       }
       
-    }) 
+    })  */
 }
 
 
