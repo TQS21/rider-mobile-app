@@ -22,7 +22,7 @@ export default class App extends Component {
     this.routerRef = React.createRef();
   }
 
-  async componentDidMount() {
+  /* async componentDidMount() {
 
     // const deliveries = await axios.get('http://localhost:8080/delivery');
 
@@ -83,7 +83,7 @@ export default class App extends Component {
 
     this.setState({ user:null,  deliveries: deliveries.data });
     // console.log(this.state)
-  }
+  } */
 
   login = async (email, password) => {
     // this.setState({ user: "dsadsasada" });
@@ -107,9 +107,71 @@ export default class App extends Component {
     let res = {data:{token: "sdsadas"}, status: 200}
     if(res.status === 200) {
       // console.log(res)
-      console.log(res.data.token)
+      console.log("token",res.data.token)
       this.setState({ user: res.data.token });
+
+
+      let deliveries = {status: 200, data : 	      
+        [
+          {
+            "id": 1,
+            "timestamp": 1653572525,
+            "delivery_timestamp": 1653572533,
+            "courier": {
+              "user": {
+                "id": 1,
+                "email": "vasco@sapo.pt"
+              },
+              "name": "Jorge",
+              "photo": "https://www.n-tv.pt/files/2022/01/jorge-2.jpg",
+              "birthdate": "2022-05-20T09:12:33.001Z"
+            },
+            "Shop": {
+              "id": 1,
+              "name": "Pingo Doce  (ó﹏ò｡) ",
+              "user": {
+                "id": 1,
+                "email": "vasco@sapo.pt"
+              },
+              "address": {
+                "latitude": 100.2,
+                "longitude": -3.2
+              }
+            },
+            "status": {
+              "id": 1,
+              "name": "Queued"
+            },
+            "contact": {
+              "name": "João Felix",
+              "phone_number": "963456432"
+            },
+            "address": {
+              "latitude": 100.2,
+              "longitude": -3.2
+            },
+            "product":{
+              "name" : "brownies ( ͡° ͜ʖ ͡°)",
+              "price": 25.0
+            }
+          }
+        ]
+        }
+  
+      if(deliveries.status === 200) {
+
+        console.log( "deliveries", deliveries.data)
+        this.setState({  deliveries: deliveries.data });
+      } else {
+        this.setState({  deliveries: null });
+      
+      }
+  
+      // console.log(this.state)
+
       return true;
+
+
     } else {
       return false;
     }
@@ -122,6 +184,7 @@ export default class App extends Component {
     // let delivery = localStorage.getItem("delivery");
     // this.setState({ user: null , deliveries, delivery });
     this.setState({ user: null  });
+    this.setState({ deliveries: []  });
     this.routerRef.current.history.push("/login");
     
   };

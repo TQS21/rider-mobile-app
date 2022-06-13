@@ -27,8 +27,8 @@ class Login extends Component {
 
         }
         else{
-          console.log("delivery")
-          console.log(this.props.context)
+          // console.log("delivery")
+          // console.log(this.props.context)
           //this.routerRef.current.history.push("/delivery");
         }
       })
