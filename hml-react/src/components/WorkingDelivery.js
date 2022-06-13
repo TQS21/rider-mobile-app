@@ -5,11 +5,10 @@ import { Redirect } from "react-router-dom";
 
 
 const WorkingDelivery = props => {
-  const {currentJob} = props.context;
-  const {user} = props.context;
-  const {history} = props;
+  const {currentJob} = props.location.state;
+  const {user} = props.location.state;
   return (
-    ! user ? (
+    user ? (
     <>
       <div className="hero is-primary">
         <div className="hero-body container">
@@ -28,7 +27,7 @@ const WorkingDelivery = props => {
         </div>
           <button
                 className="button is-small is-outlined is-primary   is-pulled-right"
-                onClick={Done(currentJob, history)}
+                onClick={() => props.context.done( { currentJob})}
               >
                 Done
               </button>
@@ -40,7 +39,7 @@ const WorkingDelivery = props => {
     )
   );
 };
-const Done = (props, history) => {
+/* const Done = (props, history) => {
   console.log("current job")
   console.log(props)
   console.log(history)
@@ -48,6 +47,6 @@ const Done = (props, history) => {
   
   // history.push("/login");
 
-}
+} */
 
 export default withContext(WorkingDelivery);

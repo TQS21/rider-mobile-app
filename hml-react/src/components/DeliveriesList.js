@@ -5,8 +5,8 @@ import { Redirect } from "react-router-dom";
 
 const DeliveriesList = props => {
   const { deliveries } = props.context;
-  const { currentJob } = props.context;
   const { user } = props.context;
+  const { currentJob } = props.context;
 
 
   return (
@@ -27,7 +27,9 @@ const DeliveriesList = props => {
                     <Delivery
                       delivery={delivery}
                       key={index}
-                      state= {props.context}
+                      user={user}
+                      accept_delivery={props.context.accept_delivery}
+                      done={props.context.done}
                     />
                   ))
               }

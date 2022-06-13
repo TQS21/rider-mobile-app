@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 
 const Delivery = props => {
   const { delivery } = props;
+  const { user } = props;
   return (
     <div className=" column is-half" style={{marginTop:30}}>
       <div className="box">
@@ -10,17 +11,17 @@ const Delivery = props => {
           <div className="media-content">
             <div>{delivery.product.name} available at {delivery.Shop.name}</div>
             <div className="is-clearfix">
-            <Link to={{pathname:'/currentJob'}}>
-
+            <Link to={{pathname:'/currentJob', state:{delivery : delivery, user: user}}}>
               <button
                     className="button is-small is-outlined is-primary   is-pulled-right"
-                    onClick={accept_del(props, delivery)}
+                    onClick={() => props.accept_delivery( { delivery})}
+                    // onClick={accept_del(delivery)}
                   >
                     Accept
                   </button>
               </Link>
 
-              <Link to={{pathname:'/Specification', state:{delivery : delivery}}}>
+              <Link to={{pathname:'/Specification', state:{delivery : delivery, user: user}}}>
                 <button
                   className="button is-small is-outlined is-primary   is-pulled-right"
                 >
@@ -36,7 +37,12 @@ const Delivery = props => {
   );
 };
 
+/* const accept_del = (props) => {
+  console.log(props)
 
+} */
+
+/* 
 const accept_del = (props, delivery) => {
   console.log(props)
   console.log(delivery)
@@ -94,8 +100,9 @@ const accept_del = (props, delivery) => {
         console.log("invalid parameters");
       }
       
-    })  */
+    })  
 }
-
+*/
 
 export default Delivery;
+ 

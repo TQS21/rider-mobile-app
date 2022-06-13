@@ -126,6 +126,73 @@ export default class App extends Component {
     
   };
 
+  accept_delivery = delivery => {
+
+    console.log(delivery)
+    let response = {status:200 , data:{}}
+  
+    if (response.status === 200){
+  
+        console.log("_Delivery accepted!!!!");
+        // this.setState({ delivery: delivery});
+        // this.routerRef.current.history.push("/delivery");
+        this.setState({ currentJob: delivery});
+      
+  
+    }
+    else if (response.status === 404){
+      console.log("Delivery not Found");
+    }
+    else if (response.status === 401){
+      console.log("Please Login first");
+    }
+    else if (response.status === 403){
+      console.log("Permission error");
+    }
+    else{
+      console.log("invalid parameters");
+    }
+  
+    /* fetch('http://deti-tqs-05:8080/delivery'+id, {
+        method: 'POST',
+        token: this.state.user,
+      }).then((response)=>{
+        if (response.ok){
+          response.json().then((logins) => {
+  
+            console.log("Delivery accepted!!!!");
+            this.setState({ delivery: delivery});
+            this.routerRef.current.history.push("/delivery");
+  
+  
+        })
+        }
+        else if (response.status === 404){
+          console.log("Delivery not Found");
+        }
+        else if (response.status === 401){
+          console.log("Please Login first");
+        }
+        else if (response.status === 403){
+          console.log("Permission error");
+        }
+        else{
+          console.log("invalid parameters");
+        }
+        
+      })  */
+  };
+
+  done = currentJob => {
+    console.log("current job")
+    console.log(currentJob)
+    this.setState({ currentJob: null  });
+    console.log(currentJob)
+    
+    this.routerRef.current.history.push("/deliveries");
+  
+  }
+
 
   checkout = () => {
     if (!this.state.user) {
@@ -140,7 +207,9 @@ export default class App extends Component {
         value={{
           ...this.state,
           login: this.login,
-          checkout: this.checkout
+          checkout: this.checkout,
+          accept_delivery: this.accept_delivery,
+          done:  this.done
         }}
       >
         <Router ref={this.routerRef}>
