@@ -220,6 +220,30 @@ export default class App extends Component {
     
   }
 
+
+  register = async (photo, birthdate, email, password) => {
+    return true;
+    // const res = await axios.post(
+    //   'http://localhost:8081/hml/api/register',
+    //   { name, email, password },
+    // ).catch((res) => {
+    //   return { status: 401, message: 'Unauthorized' }
+    // })
+    // console.log(res.status)
+    // if(res.status === 202) {
+    //   const user = {
+    //     email:res.data.email,
+    //     name:res.data.name,
+    //     bought:[]
+    //   }
+    //   this.setState({ user });
+    //   localStorage.setItem("user", JSON.stringify(user));
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+  }
+
   logout = e => {
     e.preventDefault();
     // let deliveries = localStorage.getItem("deliveries");
@@ -230,6 +254,8 @@ export default class App extends Component {
     this.routerRef.current.history.push("/login");
     
   };
+
+
 
   accept_delivery = delivery => {
 
@@ -348,7 +374,8 @@ export default class App extends Component {
           login: this.login,
           checkout: this.checkout,
           accept_delivery: this.accept_delivery,
-          done:  this.done
+          done:  this.done,
+          register:  this.register
         }}
       >
         <Router ref={this.routerRef}>

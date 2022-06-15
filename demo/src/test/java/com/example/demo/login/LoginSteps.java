@@ -52,8 +52,8 @@ public class LoginSteps {
     @When("loggin with the credencials {string} and {string}")
     public void loggin_with_credencials(final String email, final String password) {
 
-		driver.findElement(By.name("email")).sendKeys("costav689@gmail.com");
-		driver.findElement(By.name("password")).sendKeys("asdfqwer");
+		driver.findElement(By.name("email")).sendKeys(email);
+		driver.findElement(By.name("password")).sendKeys(password);
 		driver.findElement(By.xpath("//div[@id='root']/div/form/div/div/div[3]/button")).click();
 
     }
@@ -124,14 +124,33 @@ public class LoginSteps {
 
 
 
-    @When("I click on logout")
-    public void log_out() {
+    @When("I click on {string}")
+    public void click_on(final String name) {
 
-		driver.findElement(By.linkText("Logout")).click();
+		driver.findElement(By.linkText(name)).click();
 
     }
 
 
+
+
+    @When("i put the email {string}, the Birthdate {string}, the photo {string}, the password {string} and the repeat password {string}")
+    public void register_params(final String email,final String Birthdate,final String photo,final String password, final String repeat_password) {
+
+		driver.findElement(By.name("email")).sendKeys(email);
+		driver.findElement(By.name("birthdate")).sendKeys(Birthdate);
+		driver.findElement(By.name("photo")).sendKeys(photo);
+		driver.findElement(By.name("password")).sendKeys(password);
+		driver.findElement(By.name("rpt_password")).sendKeys(repeat_password);
+
+    }
+
+    @And("I click on the button Submit")
+    public void click_on_sub() {
+
+		driver.findElement(By.className("button")).click();
+
+    }
 
 
 
