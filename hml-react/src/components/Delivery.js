@@ -9,7 +9,7 @@ const Delivery = props => {
       <div className="box">
         <div className="media">
           <div className="media-content">
-            <div>{delivery.product.name} available at {delivery.Shop.name}</div>
+            {delivery.product.name} available at {delivery.Shop.name}
             <div className="is-clearfix">
             <Link to={{pathname:'/currentJob', state:{delivery : delivery, user: user}}}>
               <button

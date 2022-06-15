@@ -151,8 +151,50 @@ export default class App extends Component {
               "longitude": -3.2
             },
             "product":{
-              "name" : "brownies ( ͡° ͜ʖ ͡°)",
+              "name" : "brownies",
               "price": 25.0
+            }
+          },
+          {
+            "id": 2,
+            "timestamp": 1653572525,
+            "delivery_timestamp": 1653572533,
+            "courier": {
+              "user": {
+                "id": 2,
+                "email": "viscente@sapo.pt"
+              },
+              "name": "manel",
+              "photo": "https://www.n-tv.pt/files/2022/01/jorge-2.jpg",
+              "birthdate": "2022-05-20T09:12:33.001Z"
+            },
+            "Shop": {
+              "id": 2,
+              "name": "Continente  (ㆆ_ㆆ) ",
+              "user": {
+                "id": 1,
+                "email": "laura@sapo.pt"
+              },
+              "address": {
+                "latitude": 102.2,
+                "longitude": -32.2
+              }
+            },
+            "status": {
+              "id": 2,
+              "name": "Queued"
+            },
+            "contact": {
+              "name": "João Felix",
+              "phone_number": "963456432"
+            },
+            "address": {
+              "latitude": 103.2,
+              "longitude": -33.2
+            },
+            "product":{
+              "name" : "brownies (>‿◠)✌",
+              "price": 23.0
             }
           }
         ]
@@ -191,7 +233,7 @@ export default class App extends Component {
 
   accept_delivery = delivery => {
 
-    console.log(delivery)
+    console.log("currentjob",delivery)
     let response = {status:200 , data:{}}
   
     if (response.status === 200){
@@ -200,6 +242,7 @@ export default class App extends Component {
         // this.setState({ delivery: delivery});
         // this.routerRef.current.history.push("/delivery");
         this.setState({ currentJob: delivery});
+        this.routerRef.current.history.push("/delivery");
       
   
     }
@@ -218,7 +261,9 @@ export default class App extends Component {
   
     /* fetch('http://deti-tqs-05:8080/delivery'+id, {
         method: 'POST',
-        token: this.state.user,
+                header : new Headers({
+            'token':  this.state.user, 
+        }), 
       }).then((response)=>{
         if (response.ok){
           response.json().then((logins) => {
@@ -247,11 +292,42 @@ export default class App extends Component {
   };
 
   done = currentJob => {
-    console.log("current job")
-    console.log(currentJob)
+    console.log("current job",currentJob)
     this.setState({ currentJob: null  });
-    console.log(currentJob)
-    
+    console.log(this.state.currentJob)
+
+
+/*     fetch('http://deti-tqs-05:8080/delivery'+currentJob.id, {
+        method: 'DELETE',
+        header : new Headers({
+            'token':  this.state.user, 
+        }), 
+      }).then((response)=>{
+        if (response.status === 202){
+  
+            console.log("Delivery completed with success!!!!");
+            this.setState({ currentJob: null  });
+
+            this.routerRef.current.history.push("/deliveries");
+  
+  
+        }
+        else if (response.status === 404){
+          console.log("Delivery not Found");
+        }
+        else if (response.status === 401){
+          console.log("Please Login first");
+        }
+        else if (response.status === 403){
+          console.log("Permission error");
+        }
+        else{
+          console.log("invalid parameters");
+        }
+        
+      })  */
+
+
     this.routerRef.current.history.push("/deliveries");
   
   }

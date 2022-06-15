@@ -15,7 +15,7 @@ const Specification = props => {
     <>
       <div className="hero is-primary">
         <div className="hero-body container">
-          <h4 className="title">Deliveries</h4>
+          <h4 className="title">Deliveries Details</h4>
         </div>
       </div>
       <br />
