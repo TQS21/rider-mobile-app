@@ -6,7 +6,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: ""
     };
   }
@@ -22,14 +22,13 @@ class Login extends Component {
     }
     this.props.context.login(email, password)
       .then((loggedIn) => {
-        if (!loggedIn) {
-          this.setState({ error: "Invalid Credentails" });
+        if (!loggedIn.status) {
+          this.setState({ error: loggedIn.msg });
 
         }
         else{
-          // console.log("delivery")
-          // console.log(this.props.context)
-          //this.routerRef.current.history.push("/delivery");
+          console.log("context",this.props.context)
+          // this.routerRef.current.history.push("/delivery");
         }
       })
   };
