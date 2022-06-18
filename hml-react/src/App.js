@@ -7,6 +7,8 @@ import DeliveriesList from './components/DeliveriesList';
 import Specification from './components/Specification';
 import Register from './components/Register';
 import WorkingDelivery from './components/WorkingDelivery';
+import GeoLocation from './components/GeoLocation';
+// import { useGeolocated } from "react-geolocated";
 
 
 import Context from "./Context";
@@ -20,8 +22,11 @@ export default class App extends Component {
       deliveries: []
     };
     this.routerRef = React.createRef();
+    
   }
+  
 
+  
   /* async componentDidMount() {
 
     // const deliveries = await axios.get('http://localhost:8080/delivery');
@@ -84,24 +89,86 @@ export default class App extends Component {
     this.setState({ user:null,  deliveries: deliveries.data });
     // console.log(this.state)
   } */
+  // componentDidMount() {
+  //   GeoLocation = () => {
+  //     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+  //         useGeolocated({
+  //             positionOptions: {
+  //                 enableHighAccuracy: false,
+  //             },
+  //             userDecisionTimeout: 5000,
+  //         });}
+  //   }
 
+    
+  showPosition = (pos) => {
+      localStorage.setItem("latitude", pos.coords.latitude)
+      localStorage.setItem("longitude", pos.coords.longitude)
+  }
+    
   login = async (email, password) => {
+    // let geolocation = GeoLocation
+    console.log(email,password)
     const login = await axios.post('http://localhost:9090/auth/login', {email, password}).catch((login)=>
     {return {status: 401, message: "User not Found"}})
 
-    console.log("token",login.data.token)
+    console.log("token",login)
     if(login.status === 200) {
       let token = login.data.token
       this.setState({ user: token });
-      const delivs = await axios.get('http://localhost:9090/delivery/', {token}).catch((delivs)=>
-      {return {status: 401, message: "delivs not Found"}})
-      console.log("delivs", delivs.data)
-      if(delivs.status === 200) {
-        this.setState({ deliveries: delivs.data });
+      if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+        let latitude= localStorage.getItem("latitude")
+        let longitude= localStorage.getItem("longitude")
+        
+        console.log("latitude",latitude)
+        console.log("longitude",longitude)
+
+        // const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":latitude,"longitude":longitude}).catch((delivs)=>
+        const delivs = fetch('http://localhost:9090/delivery/nearby',{
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: {"latitude":latitude,"longitude":longitude}
+        } ).catch((delivs)=>
+        {return {status: 401, message: "delivs not Found"}})
+        console.log("delivs", delivs.data)
+        if(delivs.status === 200) {
+          this.setState({ deliveries: delivs.data });
+        }
+        else{
+          return {status:false, msg: "Get delivery error"};
+        }
       }
-      else{
-        return {status:true, msg: "Get delivery error"};
+      else {
+        return {status:false, msg: "Your browser does not support Geolocation"};
       }
+      // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+      // useGeolocated({
+      //     positionOptions: {
+      //         enableHighAccuracy: false,
+      //     },
+      //     userDecisionTimeout: 5000,
+      // });
+      
+      // if (geolocation.isGeolocationAvailable && geolocation.isGeolocationEnabled){
+      //     const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":geolocation.coords.latitude,"longitude": geolocation.coords.longitude}).catch((delivs)=>
+      //     {return {status: 401, message: "delivs not Found"}})
+      //     console.log("delivs", delivs.data)
+      //     if(delivs.status === 200) {
+      //       this.setState({ deliveries: delivs.data });
+      //     }
+      //     else{
+      //       return {status:true, msg: "Get delivery error"};
+      //     }
+      //   }
+      //   else {
+      //     let msg = geolocation.isGeolocationAvailable ?  "Your browser does not support Geolocation" : "Geolocation is not enabled"
+      //     return {status:false, msg: msg};
+        
+      //   }
 
       
       return {status:true, msg: "User not found"};
@@ -320,6 +387,7 @@ export default class App extends Component {
               <Route exact path="/specification" component={Specification} />
               <Route exact path="/deliveries" component={DeliveriesList} />
               <Route exact path="/currentJob" component={WorkingDelivery} />
+              <Route exact path="/geo" component={GeoLocation} />
               
             </Switch>
           </div>
@@ -328,3 +396,31 @@ export default class App extends Component {
     );
   }
 }
+
+
+
+
+// let { coords, isGeolocationAvailable, isGeolocationEnabled } =
+// useGeolocated({
+//     positionOptions: {
+//         enableHighAccuracy: false,
+//     },
+//     userDecisionTimeout: 5000,
+// });
+// if (isGeolocationAvailable && isGeolocationEnabled){
+//   const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":coords.latitude,"longitude": coords.longitude}).catch((delivs)=>
+//   {return {status: 401, message: "delivs not Found"}})
+//   console.log("delivs", delivs.data)
+//   if(delivs.status === 200) {
+//     this.setState({ deliveries: delivs.data });
+//   }
+//   else{
+//     return {status:true, msg: "Get delivery error"};
+//     this.setState({ error: "Get delivery error"});
+//   }
+// }
+// else {
+//   let msg = isGeolocationAvailable ?  "Your browser does not support Geolocation" : "Geolocation is not enabled"
+//   return {status:false, msg: msg};
+
+// }

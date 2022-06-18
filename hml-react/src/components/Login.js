@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import withContext from "../withContext";
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class Login extends Component {
   login = (e) => {
     e.preventDefault();
 
+
     const { email, password } = this.state;
     if (!email || !password) {
       return this.setState({ error: "Fill all fields!" });
@@ -29,6 +31,7 @@ class Login extends Component {
         else{
           console.log("context",this.props.context)
           // this.routerRef.current.history.push("/delivery");
+
         }
       })
   };
@@ -82,6 +85,7 @@ class Login extends Component {
       </>
     ) : (
       <Redirect to="/deliveries" />
+      // <Redirect to="/geo" />
     );
   }
 }
