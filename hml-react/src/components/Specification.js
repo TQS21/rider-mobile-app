@@ -13,9 +13,9 @@ const Specification = props => {
       <Redirect to="/login" /> 
     ) : ( 
     <>
-      <div className="hero is-primary">
+      <div className="hero is-warning">
         <div className="hero-body container">
-          <h4 className="title">Deliveries Details</h4>
+          <h4 className="title">Delivery Detail</h4>
         </div>
       </div>
       <br />
@@ -24,9 +24,15 @@ const Specification = props => {
       <main className="container">
       <div className="right-column">
         <div className="product-description">
-          <h1>{delivery.product.name}</h1>
-          <h4>in {delivery.Shop.name}</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ultrices, erat id venenatis venenatis, purus tortor fermentum ipsum, in fringilla eros felis non justo. Morbi placerat lorem a elit pellentesque auctor. </p>
+          
+          <p>Shop: <b>{delivery.shop.name}</b></p>
+          <p></p>
+          <p>Product:</p>
+          {delivery.deliveries.map((delivery, i) => {     
+           // Return the element. Also pass key     
+           return (<b>{delivery}</b>) 
+        })}
+          <p>Address: <b>{delivery.shopOrderRef.address}</b></p>
         </div>
         <Link to={{pathname:'/currentJob', state:{delivery : delivery, user: user}}}>
           <button

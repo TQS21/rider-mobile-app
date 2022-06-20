@@ -74,7 +74,7 @@ class Register extends Component {
   render() {
     return !this.props.context.user ? (
       <>
-        <div className="hero is-primary ">
+        <div className="hero is-warning ">
           <div className="hero-body container">
             <h4 className="title">Register</h4>
           </div>

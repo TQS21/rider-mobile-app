@@ -109,69 +109,48 @@ export default class App extends Component {
   login = async (email, password) => {
     // let geolocation = GeoLocation
     console.log(email,password)
-    const login = await axios.post('http://localhost:9090/auth/login', {email, password}).catch((login)=>
-    {return {status: 401, message: "User not Found"}})
+    const login = await axios.post('http://deti-tqs-05/auth/login', {email, password}).catch((err)=>
+    {return {status: err.response.status, message: err.code}})
 
     console.log("token",login)
     if(login.status === 200) {
       let token = login.data.token
-      this.setState({ user: token });
+      
       if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(this.showPosition);
-        let latitude= localStorage.getItem("latitude")
-        let longitude= localStorage.getItem("longitude")
+        let latitude = localStorage.getItem("latitude")
+        let longitude = localStorage.getItem("longitude")
         
         console.log("latitude",latitude)
         console.log("longitude",longitude)
 
-        // const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":latitude,"longitude":longitude}).catch((delivs)=>
-        const delivs = fetch('http://localhost:9090/delivery/nearby',{
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: {"latitude":latitude,"longitude":longitude}
-        } ).catch((delivs)=>
-        {return {status: 401, message: "delivs not Found"}})
-        console.log("delivs", delivs.data)
-        if(delivs.status === 200) {
-          this.setState({ deliveries: delivs.data });
-        }
-        else{
-          return {status:false, msg: "Get delivery error"};
-        }
+    
+
+        // const delivs = await axios.post('http://deti-tqs-05/delivery/nearby', 
+        // {   "latitude":latitude,
+        //     "longitude":longitude
+        // }).catch((err)=> 
+        //  {return {status: err.status, message: err.code}})
+         const delivs = await axios.get('http://deti-tqs-05/delivery/').catch((err)=> 
+          {return {status: err.status, message: err.code}})
+
+          console.log("delivs", delivs)
+          if(delivs.status === 200) {
+            this.setState({ user: token });
+            this.setState({ deliveries: delivs.data });
+            console.log("delivs success")
+            return  {status:true, msg: "delivery success"}
+          }
+          else{
+            console.log("delivs error", delivs.status)
+
+            return {status:false, msg: "Get delivery error"};
+          }
       }
       else {
         return {status:false, msg: "Your browser does not support Geolocation"};
       }
-      // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-      // useGeolocated({
-      //     positionOptions: {
-      //         enableHighAccuracy: false,
-      //     },
-      //     userDecisionTimeout: 5000,
-      // });
-      
-      // if (geolocation.isGeolocationAvailable && geolocation.isGeolocationEnabled){
-      //     const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":geolocation.coords.latitude,"longitude": geolocation.coords.longitude}).catch((delivs)=>
-      //     {return {status: 401, message: "delivs not Found"}})
-      //     console.log("delivs", delivs.data)
-      //     if(delivs.status === 200) {
-      //       this.setState({ deliveries: delivs.data });
-      //     }
-      //     else{
-      //       return {status:true, msg: "Get delivery error"};
-      //     }
-      //   }
-      //   else {
-      //     let msg = geolocation.isGeolocationAvailable ?  "Your browser does not support Geolocation" : "Geolocation is not enabled"
-      //     return {status:false, msg: msg};
-        
-      //   }
 
-      
-      return {status:true, msg: "User not found"};
     } else if(login.status === 404) {
       console.log("User not found")
       return {status:false, msg: "User not found"};
@@ -184,7 +163,7 @@ export default class App extends Component {
 
   register = async (photo, birthdate, email, password) => {
     const reg = await axios.post(
-      'http://localhost:9090/courier/',
+      'http://deti-tqs-05/courier/',
       { email, photo, birthdate, password},
     ).catch((reg) => {
       return { status: 401, message: 'Unauthorized' }
@@ -210,7 +189,7 @@ export default class App extends Component {
   logout = e => {
     e.preventDefault();
     // let delivery = localStorage.getItem("delivery");
-    this.setState({ user: null , deliveries:null, delivery:null });
+    this.setState({ user: null , deliveries:[], delivery:null });
     //  let user = localStorage.getItem("user");
     // let delivery = localStorage.getItem("delivery");
     // this.setState({ user: null , deliveries, delivery });
@@ -238,13 +217,13 @@ export default class App extends Component {
 
   accept_delivery = delivery => {
 
-    let user = localStorage.getItem("user");
+    // let user = localStorage.getItem("user");
     console.log("currentjob",delivery)
 
     const accept = axios.post(
-      'http://localhost:9090/delivery/'+delivery.id+'/accept',
-      { user},
-    ).catch((accept) => {
+      'http://deti-tqs-05/delivery/'+delivery.id+'/accept'
+      // ,{ user}
+    ).catch((err) => {
       return { status: 401, message: 'Unauthorized' }
     })
   
@@ -275,11 +254,11 @@ export default class App extends Component {
   done = currentJob => {
     console.log("current job",currentJob)
 
-    let user = localStorage.getItem("user");
+    // let user = localStorage.getItem("user");
 
     const done = axios.post(
-      'http://localhost:9090/delivery/'+currentJob.id+'/deliver',
-      { user},
+      'http://deti-tqs-05/delivery/'+currentJob.id+'/deliver'
+      // ,{ user}
     ).catch((done) => {
       return { status: 401, message: 'Unauthorized' }
     })
@@ -337,7 +316,7 @@ export default class App extends Component {
             aria-label="main navigation"
           >
             <div className="navbar-brand">
-              <b className="navbar-item is-size-4 ">HML</b>
+              <b className="navbar-item is-size-4 ">DE</b>
               <label
                 role="button"
                 className="navbar-burger burger"
@@ -408,7 +387,7 @@ export default class App extends Component {
 //     userDecisionTimeout: 5000,
 // });
 // if (isGeolocationAvailable && isGeolocationEnabled){
-//   const delivs = await axios.get('http://localhost:9090/delivery/nearby', {"latitude":coords.latitude,"longitude": coords.longitude}).catch((delivs)=>
+//   const delivs = await axios.get('http://deti-tqs-05/delivery/nearby', {"latitude":coords.latitude,"longitude": coords.longitude}).catch((delivs)=>
 //   {return {status: 401, message: "delivs not Found"}})
 //   console.log("delivs", delivs.data)
 //   if(delivs.status === 200) {
