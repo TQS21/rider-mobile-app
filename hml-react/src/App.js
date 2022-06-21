@@ -32,7 +32,7 @@ export default class App extends Component {
       // localStorage.setItem("latitude", pos.coords.latitude) 
       // localStorage.setItem("longitude", pos.coords.longitude)
       localStorage.setItem("latitude", 40.6313668 )
-      localStorage.setItem("latitude", -8.6598972 )
+      localStorage.setItem("longitude", -8.6598972 )
   }
     
   login = async (email, password) => {
