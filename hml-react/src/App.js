@@ -47,21 +47,23 @@ export default class App extends Component {
       
       if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(this.showPosition);
-        let latitude = localStorage.getItem("latitude")
-        let longitude = localStorage.getItem("longitude")
+        // let latitude = localStorage.getItem("latitude")
+        // let longitude = localStorage.getItem("longitude")
+        let latitude = 40.6313668 
+        let longitude = 8.6598972
         
         console.log("latitude",latitude)
         console.log("longitude",longitude)
 
     
 
-        const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
-         {return {status: err.status, message: err.code}})
-        //  const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
-        //           { "latitude":latitude,
-        //             "longitude":longitude
-        //       }).catch((err)=> 
-        //   {return {status: err.status, message: err.code}})
+        // const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
+        //  {return {status: err.status, message: err.code}})
+         const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
+                  { "latitude":latitude,
+                    "longitude":longitude
+              }).catch((err)=> 
+          {return {status: err.status, message: err.code}})
 
           console.log("delivs", delivs) 
           if(delivs.status === 200) {
@@ -168,14 +170,14 @@ export default class App extends Component {
     // this.setState({ currentJob: delivery});
     // localStorage.setItem("currentJob", delivery )
     console.log(accept)
-    this.setState({ currentJob: delivery});
+    // this.setState({ currentJob: delivery});
     if (accept.status === 200){
   
         console.log("_Delivery accepted!!!!");
         // this.setState({ delivery: delivery});
         // this.routerRef.current.history.push("/delivery");
         this.setState({ currentJob: delivery});
-        localStorage.setItem("currentJob", delivery )
+        // localStorage.setItem("currentJob", delivery )
         this.routerRef.current.history.push("/collectProduct");
       
     }
@@ -277,13 +279,19 @@ export default class App extends Component {
     }
 
 
-  const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
-  {return {status: err.status, message: err.code}})
-   //  const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
-   //           { "latitude":latitude,
-   //             "longitude":longitude
-   //       }).catch((err)=> 
-   //   {return {status: err.status, message: err.code}})
+  // const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
+  // {return {status: err.status, message: err.code}})
+  //if (navigator.geolocation){
+  //  navigator.geolocation.getCurrentPosition(this.showPosition);
+    // let latitude = localStorage.getItem("latitude")
+    // let longitude = localStorage.getItem("longitude")
+    let latitude = 40.6313668 
+    let longitude = 8.6598972
+    const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
+             { "latitude":latitude,
+               "longitude":longitude
+         }).catch((err)=> 
+     {return {status: err.status, message: err.code}})
    this.setState({ deliveries: delivs.data });
    console.log("delivs", delivs) 
    if(delivs.status === 200) {
