@@ -6,7 +6,8 @@ import Login from './components/Login';
 import DeliveriesList from './components/DeliveriesList';
 import Specification from './components/Specification';
 import Register from './components/Register';
-import WorkingDelivery from './components/WorkingDelivery';
+import CollectDelivery from './components/CollectDelivery';
+import DeliverDelivery from './components/DeliverDelivery';
 import GeoLocation from './components/GeoLocation';
 // import { useGeolocated } from "react-geolocated";
 
@@ -26,90 +27,18 @@ export default class App extends Component {
   }
   
 
-  
-  /* async componentDidMount() {
-
-    // const deliveries = await axios.get('http://localhost:8080/delivery');
-
-    let deliveries = {status: 200, data : 	      
-      [
-        {
-          "id": 1,
-          "timestamp": 1653572525,
-          "delivery_timestamp": 1653572533,
-          "courier": {
-            "user": {
-              "id": 1,
-              "email": "vasco@sapo.pt"
-            },
-            "name": "Jorge",
-            "photo": "https://www.n-tv.pt/files/2022/01/jorge-2.jpg",
-            "birthdate": "2022-05-20T09:12:33.001Z"
-          },
-          "Shop": {
-            "id": 1,
-            "name": "Pingo Doce  (ó﹏ò｡) ",
-            "user": {
-              "id": 1,
-              "email": "vasco@sapo.pt"
-            },
-            "address": {
-              "latitude": 100.2,
-              "longitude": -3.2
-            }
-          },
-          "status": {
-            "id": 1,
-            "name": "Queued"
-          },
-          "contact": {
-            "name": "João Felix",
-            "phone_number": "963456432"
-          },
-          "address": {
-            "latitude": 100.2,
-            "longitude": -3.2
-          },
-          "product":{
-            "name" : "brownies ( ͡° ͜ʖ ͡°)",
-            "price": 25.0
-          }
-        }
-      ]
-      }
-
-    if(deliveries.status === 200) {
-      console.log(deliveries.data)
-      this.setState({ user:null,  deliveries: deliveries.data });
-    } else {
-      this.setState({ user:null,  deliveries: null });
-    
-    }
-
-    this.setState({ user:null,  deliveries: deliveries.data });
-    // console.log(this.state)
-  } */
-  // componentDidMount() {
-  //   GeoLocation = () => {
-  //     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-  //         useGeolocated({
-  //             positionOptions: {
-  //                 enableHighAccuracy: false,
-  //             },
-  //             userDecisionTimeout: 5000,
-  //         });}
-  //   }
-
     
   showPosition = (pos) => {
-      localStorage.setItem("latitude", pos.coords.latitude)
-      localStorage.setItem("longitude", pos.coords.longitude)
+      // localStorage.setItem("latitude", pos.coords.latitude) 
+      // localStorage.setItem("longitude", pos.coords.longitude)
+      localStorage.setItem("latitude", 40.6313668 )
+      localStorage.setItem("latitude", -8.6598972 )
   }
     
   login = async (email, password) => {
     // let geolocation = GeoLocation
     console.log(email,password)
-    const login = await axios.post('http://localhost:8080/auth/login', {email, password}).catch((err)=>
+    const login = await axios.post('http://deti-tqs-05:9090/auth/login', {email, password}).catch((err)=>
     {return {status: err.response.status, message: err.code}})
 
     console.log("token",login)
@@ -126,15 +55,15 @@ export default class App extends Component {
 
     
 
-        // const delivs = await axios.post('http://localhost:8080/delivery/nearby', 
-        // {   "latitude":latitude,
-        //     "longitude":longitude
-        // }).catch((err)=> 
-        //  {return {status: err.status, message: err.code}})
-         const delivs = await axios.get('http://localhost:8080/delivery/').catch((err)=> 
-          {return {status: err.status, message: err.code}})
+        const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
+         {return {status: err.status, message: err.code}})
+        //  const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
+        //           { "latitude":latitude,
+        //             "longitude":longitude
+        //       }).catch((err)=> 
+        //   {return {status: err.status, message: err.code}})
 
-          console.log("delivs", delivs)
+          console.log("delivs", delivs) 
           if(delivs.status === 200) {
             this.setState({ user: token });
             this.setState({ deliveries: delivs.data });
@@ -163,7 +92,7 @@ export default class App extends Component {
 
   register = async (photo, birthdate, email, password) => {
     const reg = await axios.post(
-      'http://localhost:8080/courier/',
+      'http://deti-tqs-05:9090/courier/',
       { email, photo, birthdate, password},
     ).catch((reg) => {
       return { status: 401, message: 'Unauthorized' }
@@ -190,6 +119,7 @@ export default class App extends Component {
     e.preventDefault();
     // let delivery = localStorage.getItem("delivery");
     this.setState({ user: null , deliveries:[], delivery:null });
+    this.routerRef.current.history.push("/login");
     //  let user = localStorage.getItem("user");
     // let delivery = localStorage.getItem("delivery");
     // this.setState({ user: null , deliveries, delivery });
@@ -215,25 +145,38 @@ export default class App extends Component {
 
 
 
-  accept_delivery = delivery => {
+  accept_delivery = async(delivery) => {
 
-    // let user = localStorage.getItem("user");
+    let user = this.state.user
+
     console.log("currentjob",delivery)
+    console.log("id",delivery.delivery.id)
+    let id = delivery.delivery.id
+    this.setState({ currentJob: delivery});
+    
+    let config = {
+      headers: {
+        "Authorization": "  Bearer "+user,
+      }
+    }
 
-    const accept = axios.post(
-      'http://localhost:8080/delivery/'+delivery.id+'/accept'
-      // ,{ user}
+    const accept = await axios.post(
+      'http://deti-tqs-05:9090/delivery/'+id+'/accept',{} ,config
     ).catch((err) => {
-      return { status: 401, message: 'Unauthorized' }
+      console.log(err);return { status: err.status, message: err.message }
     })
-  
+    // this.setState({ currentJob: delivery});
+    // localStorage.setItem("currentJob", delivery )
+    console.log(accept)
+    this.setState({ currentJob: delivery});
     if (accept.status === 200){
   
         console.log("_Delivery accepted!!!!");
         // this.setState({ delivery: delivery});
         // this.routerRef.current.history.push("/delivery");
         this.setState({ currentJob: delivery});
-        this.routerRef.current.history.push("/delivery");
+        localStorage.setItem("currentJob", delivery )
+        this.routerRef.current.history.push("/collectProduct");
       
     }
     else if (accept.status === 404){
@@ -248,26 +191,33 @@ export default class App extends Component {
     else{
       console.log("invalid parameters");
     }
+    this.routerRef.current.history.push("/collectProduct");
   
   };
 
-  done = currentJob => {
+  collect = async(currentJob) => {
     console.log("current job",currentJob)
 
-    // let user = localStorage.getItem("user");
+    let user = this.state.user
+    let id = currentJob.currentJob.delivery.id
 
-    const done = axios.post(
-      'http://localhost:8080/delivery/'+currentJob.id+'/deliver'
+    let config = {
+      headers: {
+        "Authorization": "Bearer "+user,
+      }
+    }
+
+    const done = await axios.post(
+      'http://deti-tqs-05:9090/delivery/'+id+'/collect', {},config
       // ,{ user}
-    ).catch((done) => {
-      return { status: 401, message: 'Unauthorized' }
+    ).catch((err) => {
+      console.log(err);return { status: 401, message: 'Unauthorized' }
     })
-  
+    console.log(done);
     if (done.status === 200){
   
-      this.setState({ currentJob: null  });
-      console.log(this.state.currentJob)
-      console.log("Deliver")
+      console.log("collect")
+      this.routerRef.current.history.push("/deliverProduct");
 
       
     }
@@ -283,6 +233,68 @@ export default class App extends Component {
     else{
       console.log("invalid parameters");
     }
+    this.routerRef.current.history.push("/deliverProduct");
+  
+  }
+
+  done = async(currentJob) => {
+    console.log("current job",currentJob)
+
+    let user = this.state.user
+
+    let config = {
+      headers: {
+        "Authorization": "Bearer "+user,
+      }
+    }
+    let id = currentJob.currentJob.delivery.id
+    const done = await axios.post(
+      'http://deti-tqs-05:9090/delivery/'+id+'/deliver', {},config
+      // ,{ user}
+    ).catch((done) => {
+      return { status: 401, message: 'Unauthorized' }
+    })
+    if (done.status === 200){
+  
+      // this.setState({ currntJob: null  });
+      console.log(this.state.currentJob)
+      console.log("Deliver")
+      localStorage.setItem("currentJob", null )
+
+      
+    }
+    else if (done.status === 404){
+      console.log("Delivery not Found");
+    }
+    else if (done.status === 401){
+      console.log("Please Login first");
+    }
+    else if (done.status === 403){
+      console.log("Permission error");
+    }
+    else{
+      console.log("invalid parameters");
+    }
+
+
+  const delivs = await axios.get('http://deti-tqs-05:9090/delivery/').catch((err)=> 
+  {return {status: err.status, message: err.code}})
+   //  const delivs = await axios.post('http://deti-tqs-05:9090/delivery/nearby', 
+   //           { "latitude":latitude,
+   //             "longitude":longitude
+   //       }).catch((err)=> 
+   //   {return {status: err.status, message: err.code}})
+   this.setState({ deliveries: delivs.data });
+   console.log("delivs", delivs) 
+   if(delivs.status === 200) {
+     this.setState({ deliveries: delivs.data });
+     console.log("delivs success")
+   }
+   else{
+     console.log("delivs error", delivs.status)
+
+   }
+  //  this.setState({ currentJob: null });
 
     this.routerRef.current.history.push("/deliveries");
   
@@ -305,6 +317,7 @@ export default class App extends Component {
           checkout: this.checkout,
           accept_delivery: this.accept_delivery,
           done:  this.done,
+          collect:  this.collect,
           register:  this.register
         }}
       >
@@ -365,7 +378,8 @@ export default class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/specification" component={Specification} />
               <Route exact path="/deliveries" component={DeliveriesList} />
-              <Route exact path="/currentJob" component={WorkingDelivery} />
+              <Route exact path="/collectProduct" component={CollectDelivery} />
+              <Route exact path="/deliverProduct" component={DeliverDelivery} />
               <Route exact path="/geo" component={GeoLocation} />
               
             </Switch>
