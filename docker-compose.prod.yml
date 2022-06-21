@@ -2,7 +2,7 @@ services:
   frontend:
     build: ./hml-react
     ports:
-      - 5000:80
+      - 5000:3000
     restart: on-failure
 
 networks:
