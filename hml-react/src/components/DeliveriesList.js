@@ -14,7 +14,7 @@ const DeliveriesList = props => {
           <Redirect to="/login" /> 
         ) : ( !currentJob ? (
           <>
-            <div className="hero is-primary">
+            <div className="hero is-warning">
               <div className="hero-body container">
                 <h4 className="title">deliveries</h4>
               </div>

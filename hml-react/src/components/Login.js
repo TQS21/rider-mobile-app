@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import withContext from "../withContext";
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: ""
     };
   }
@@ -16,20 +17,21 @@ class Login extends Component {
   login = (e) => {
     e.preventDefault();
 
+
     const { email, password } = this.state;
     if (!email || !password) {
       return this.setState({ error: "Fill all fields!" });
     }
     this.props.context.login(email, password)
       .then((loggedIn) => {
-        if (!loggedIn) {
-          this.setState({ error: "Invalid Credentails" });
+        if (!loggedIn.status) {
+          this.setState({ error: loggedIn.msg });
 
         }
         else{
-          // console.log("delivery")
-          // console.log(this.props.context)
-          //this.routerRef.current.history.push("/delivery");
+          console.log("context",this.props.context)
+          // this.routerRef.current.history.push("/delivery");
+
         }
       })
   };
@@ -37,9 +39,9 @@ class Login extends Component {
   render() {
     return !this.props.context.user ? (
       <>
-        <div className="hero is-primary ">
+        <div className="hero is-warning " >
           <div className="hero-body container">
-            <h4 className="title">Login</h4>
+            <h4 className="title">Rider Login</h4>
           </div>
         </div>
         <br />
@@ -83,6 +85,7 @@ class Login extends Component {
       </>
     ) : (
       <Redirect to="/deliveries" />
+      // <Redirect to="/geo" />
     );
   }
 }

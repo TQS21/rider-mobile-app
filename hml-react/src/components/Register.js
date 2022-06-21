@@ -34,11 +34,11 @@ class Register extends Component {
     }
     this.props.context.register( photo, birthdate, email, password)
       .then((loggedIn) => {
-        if (!loggedIn) {
-          this.setState({ error: "Invalid Credentails!" });
+        if (!loggedIn.status) {
+          this.setState({ error: loggedIn.msg });
         }
         else{
-          this.props.history.push("/login")
+          this.props.history.push("/deliveries")
         }
       })
     
@@ -74,7 +74,7 @@ class Register extends Component {
   render() {
     return !this.props.context.user ? (
       <>
-        <div className="hero is-primary ">
+        <div className="hero is-warning ">
           <div className="hero-body container">
             <h4 className="title">Register</h4>
           </div>
