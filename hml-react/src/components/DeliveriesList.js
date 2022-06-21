@@ -12,7 +12,7 @@ const DeliveriesList = props => {
   return (
      ! user ? (
           <Redirect to="/login" /> 
-        ) : ( !currentJob ? (
+        ) : ( 
           <>
             <div className="hero is-warning">
               <div className="hero-body container">
@@ -29,16 +29,12 @@ const DeliveriesList = props => {
                       key={index}
                       user={user}
                       accept_delivery={props.context.accept_delivery}
-                      done={props.context.done}
-                    />
+                      done={props.context.done}/>
                   ))
               }
               </div>
             </div>
-    </>) : (
-        <Redirect to="/currentJob" />
-
-    ))
+    </>)
   );
 };
 

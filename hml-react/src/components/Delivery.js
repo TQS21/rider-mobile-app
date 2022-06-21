@@ -1,6 +1,26 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
+function getDistanceFromLatLonInKm(lat2,lon2) {
+  var lat1 = localStorage.getItem("latitude");
+  var lon1= localStorage.getItem("longitude");
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = Math.round(R * c); // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 const Delivery = props => {
   const { delivery } = props;
   const { user } = props;
@@ -9,9 +29,13 @@ const Delivery = props => {
       <div className="box">
         <div className="media">
           <div className="media-content">
-            {delivery.product.name} available at {delivery.Shop.name}
+            <p>Shop: {delivery.shop.name}</p>
+            <p>Distance to shop: {getDistanceFromLatLonInKm(delivery.shop.address.latitude,delivery.shop.address.longitude)} km</p>
+            <p>Address: {delivery.contact.address}</p>
+            {/*<p>Distance to Client: {getDistanceFromLatLonInKm(delivery.address.latitude,delivery.address.longitude)} km</p>*/}
+            <p>Order status: <b>{delivery.orderStatus.status}</b></p>
             <div className="is-clearfix">
-            <Link to={{pathname:'/currentJob', state:{delivery : delivery, user: user}}}>
+            <Link to={{pathname:'/collectProduct', state:{delivery : delivery, user: user}}}>
               <button
                     className="button is-small is-outlined is-primary   is-pulled-right"
                     onClick={() => props.accept_delivery( { delivery})}
