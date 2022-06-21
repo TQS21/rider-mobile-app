@@ -49,7 +49,7 @@ const DeliverDelivery = props => {
           <p></p>
           <p>Phone: <b>{currentJob.delivery.contact.phone_number}</b></p>
           <p></p>
-          <p>Distance to Client:  <b>{getDistanceFromLatLonInKm(currentJob.delivery.address.latitude,currentJob.delivery.address.longitude)} km</b></p> 
+          {/*<p>Distance to Client:  <b>{getDistanceFromLatLonInKm(currentJob.delivery.address.latitude,currentJob.delivery.address.longitude)} km</b></p> */}
           <p></p>
           <p>Order status: <b>{currentJob.delivery.orderStatus.status}</b></p>
         </div>

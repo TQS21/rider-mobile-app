@@ -32,7 +32,7 @@ const Delivery = props => {
             <p>Shop: {delivery.shop.name}</p>
             <p>Distance to shop: {getDistanceFromLatLonInKm(delivery.shop.address.latitude,delivery.shop.address.longitude)} km</p>
             <p>Address: {delivery.contact.address}</p>
-            <p>Distance to Client: {getDistanceFromLatLonInKm(delivery.address.latitude,delivery.address.longitude)} km</p>
+            {/*<p>Distance to Client: {getDistanceFromLatLonInKm(delivery.address.latitude,delivery.address.longitude)} km</p>*/}
             <p>Order status: <b>{delivery.orderStatus.status}</b></p>
             <div className="is-clearfix">
             <Link to={{pathname:'/collectProduct', state:{delivery : delivery, user: user}}}>

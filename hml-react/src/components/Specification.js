@@ -53,7 +53,7 @@ const Specification = props => {
           <p></p>
           <p>Distance to shop:  <b>{getDistanceFromLatLonInKm(delivery.shop.address.latitude,delivery.shop.address.longitude)} km</b></p>
           <p></p>
-          <p>Distance to Client:  <b>{getDistanceFromLatLonInKm(delivery.address.latitude,delivery.address.longitude)} km</b></p>
+          {/*<p>Distance to Client:  <b>{getDistanceFromLatLonInKm(delivery.address.latitude,delivery.address.longitude)} km</b></p>*/}
           <p></p>
           <p>Order status: <b>{delivery.orderStatus.status}</b></p>
           {/* <p>Product:</p>
