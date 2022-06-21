@@ -50,7 +50,7 @@ export default class App extends Component {
         // let latitude = localStorage.getItem("latitude")
         // let longitude = localStorage.getItem("longitude")
         let latitude = 40.6313668 
-        let longitude = 8.6598972
+        let longitude = -8.6598972
         
         console.log("latitude",latitude)
         console.log("longitude",longitude)
