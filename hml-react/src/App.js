@@ -109,7 +109,7 @@ export default class App extends Component {
   login = async (email, password) => {
     // let geolocation = GeoLocation
     console.log(email,password)
-    const login = await axios.post('http://deti-tqs-05/auth/login', {email, password}).catch((err)=>
+    const login = await axios.post('http://localhost:8080/auth/login', {email, password}).catch((err)=>
     {return {status: err.response.status, message: err.code}})
 
     console.log("token",login)
@@ -126,12 +126,12 @@ export default class App extends Component {
 
     
 
-        // const delivs = await axios.post('http://deti-tqs-05/delivery/nearby', 
+        // const delivs = await axios.post('http://localhost:8080/delivery/nearby', 
         // {   "latitude":latitude,
         //     "longitude":longitude
         // }).catch((err)=> 
         //  {return {status: err.status, message: err.code}})
-         const delivs = await axios.get('http://deti-tqs-05/delivery/').catch((err)=> 
+         const delivs = await axios.get('http://localhost:8080/delivery/').catch((err)=> 
           {return {status: err.status, message: err.code}})
 
           console.log("delivs", delivs)
@@ -163,7 +163,7 @@ export default class App extends Component {
 
   register = async (photo, birthdate, email, password) => {
     const reg = await axios.post(
-      'http://deti-tqs-05/courier/',
+      'http://localhost:8080/courier/',
       { email, photo, birthdate, password},
     ).catch((reg) => {
       return { status: 401, message: 'Unauthorized' }
@@ -221,7 +221,7 @@ export default class App extends Component {
     console.log("currentjob",delivery)
 
     const accept = axios.post(
-      'http://deti-tqs-05/delivery/'+delivery.id+'/accept'
+      'http://localhost:8080/delivery/'+delivery.id+'/accept'
       // ,{ user}
     ).catch((err) => {
       return { status: 401, message: 'Unauthorized' }
@@ -257,7 +257,7 @@ export default class App extends Component {
     // let user = localStorage.getItem("user");
 
     const done = axios.post(
-      'http://deti-tqs-05/delivery/'+currentJob.id+'/deliver'
+      'http://localhost:8080/delivery/'+currentJob.id+'/deliver'
       // ,{ user}
     ).catch((done) => {
       return { status: 401, message: 'Unauthorized' }
@@ -387,7 +387,7 @@ export default class App extends Component {
 //     userDecisionTimeout: 5000,
 // });
 // if (isGeolocationAvailable && isGeolocationEnabled){
-//   const delivs = await axios.get('http://deti-tqs-05/delivery/nearby', {"latitude":coords.latitude,"longitude": coords.longitude}).catch((delivs)=>
+//   const delivs = await axios.get('http://localhost:8080/delivery/nearby', {"latitude":coords.latitude,"longitude": coords.longitude}).catch((delivs)=>
 //   {return {status: 401, message: "delivs not Found"}})
 //   console.log("delivs", delivs.data)
 //   if(delivs.status === 200) {
